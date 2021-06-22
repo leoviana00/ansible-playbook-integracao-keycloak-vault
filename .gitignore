@@ -1,0 +1,13 @@
+#Vault
+vault/data
+vault/logs
+vault/policies
+# Ansible
+site.retry
+*.retry
+**/.retry
+**/pulse-infra.*
+site.retry
+
+# Editor
+.vscode

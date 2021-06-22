@@ -1,0 +1,39 @@
+- name: Criar diretório dos arquivos
+  file:
+    dest: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - /home/vagrant/vault/config/
+    - /home/vagrant/vault/policies/
+    - /home/vagrant/vault/data/
+    - /home/vagrant/vault/logs/
+    
+
+- name: Copiar arquivo de configuracao
+  copy:
+    src: "vault-{{ambiente}}.json"
+    dest: /home/vagrant/vault/config/vault-config.json
+    owner: vagrant
+    group: vagrant
+
+- name: Rodar Vault Container
+  docker_container:
+    name: vault
+    image: leoviana00/vault-vagrant-dev
+    restart: yes
+    recreate: yes
+    state: started
+    restart_policy: always
+    volumes:
+      - /home/vagrant/vault/config:/vault/config
+      - /home/vagrant/vault/policies:/vault/policies
+      - /home/vagrant/vault/data:/vault/data
+      - /home/vagrant/vault/logs:/vault/logs
+    ports:
+      - 80:8200
+    env:
+      VAULT_ADDR: http://127.0.0.1:8200
+    command: server -config=/vault/config/vault-config.json
+    capabilities:
+      - IPC_LOCK

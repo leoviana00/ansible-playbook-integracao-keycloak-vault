@@ -1,0 +1,29 @@
+---
+- name: Criar diretório dos arquivos
+  file:
+    dest: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - /home/vagrant/pgsql/
+
+- name: Copiar arquivos 
+  copy:
+     src: files/
+     dest: /home/vagrant/pgsql
+     owner: vagrant
+     group: vagrant
+
+- name: Rodar Pgsql Container
+  docker_container:
+    name: db
+    image: postgres
+    restart: yes
+    recreate: yes
+    state: started
+    restart_policy: always
+    env_file: /home/vagrant/pgsql/env/postgres.env
+    volumes:
+    - /home/vagrant/pgsql/db_home:/var/lib/postgresql/data
+    ports:
+    - 5432:5432

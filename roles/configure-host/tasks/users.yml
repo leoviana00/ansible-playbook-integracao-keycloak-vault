@@ -1,0 +1,41 @@
+---
+- name: Criar grupos
+  group:
+    name: "{{ item }}"
+  with_items:
+    - wheel
+    - vagrant
+    - docker
+
+- name: Criar usuario vagrant
+  user:
+    name: vagrant
+    comment: Usuario padrão
+    shell: /bin/bash
+    groups:
+      - wheel
+      - docker
+      - vagrant
+    create_home: yes
+
+- name: Adicionar chaves públicas para root
+  authorized_key:
+    user: root
+    state: present
+    key: "{{ item }}"
+  with_file:
+    - public_keys/ansible.pub
+
+- name: Adicionar chaves públicas para vagrant
+  authorized_key:
+    user: vagrant
+    state: present
+    key: "{{ item }}"
+  with_file:
+    - public_keys/ansible.pub
+
+- name: Modificar /etc/sudoers
+  lineinfile:
+    path: /etc/sudoers
+    line: 'vagrant ALL=(ALL:ALL) NOPASSWD: ALL'
+    insertbefore: BOF

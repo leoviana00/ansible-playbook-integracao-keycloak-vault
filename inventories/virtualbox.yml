@@ -1,0 +1,26 @@
+---
+all:
+  vars:
+    ambiente: virtualbox
+
+  hosts:
+    keycloak-01:
+      ansible_host: 192.168.10.3
+    postgres-01:
+      ansible_host: 192.168.10.10
+    vault-01:
+      ansible_host: 192.168.10.2
+
+  children:
+  
+    keycloak:
+      hosts:
+        keycloak-01:
+    db:
+      hosts:
+        postgres-01:
+    cofre:
+      hosts:
+        vault-01:
+
+

@@ -1,0 +1,35 @@
+---
+- name: Criar diretório dos arquivos
+  file:
+    dest: "{{ item }}"
+    state: directory
+    mode: 0755
+  with_items:
+    - /home/vagrant/keycloak/
+
+- name: Copiar arquivos 
+  copy:
+     src: files/
+     dest: /home/vagrant/keycloak
+     owner: vagrant
+     group: vagrant
+
+- name: Deploy Keycloak Container
+  docker_container:
+    
+    image: jboss/keycloak:14.0.0
+    name: keycloak
+    restart_policy: always
+    state: started
+    restart: yes
+    recreate: yes
+    volumes:
+    - /home/vagrant/keycloak:/var/lib/keycloak/data
+    env_file: /home/vagrant/keycloak/keycloak.env
+    ports:
+      - "8089:8080"
+      - "9090:9090"
+      - "8443:8443"
+ 
+
+

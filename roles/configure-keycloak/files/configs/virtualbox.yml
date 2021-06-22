@@ -1,0 +1,6 @@
+---
+db_host: db
+db_name: keycloak
+db_user: keycloak
+db_password: keycloak
+db_schema: keycloak_

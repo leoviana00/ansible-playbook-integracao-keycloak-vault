@@ -1,0 +1,11 @@
+---
+
+# Docker install variables
+install_docker: true
+docker_storage_driver: zfs
+docker_insecure_registries:
+  # - 192.168.0.0:5000
+  # - 192.168.0.0:5001
+  # - docker.registry:5000
+
+docker_cgroup_driver: systemd

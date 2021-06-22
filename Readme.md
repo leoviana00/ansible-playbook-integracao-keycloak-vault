@@ -54,7 +54,7 @@ $ ansible-playbook -i inventories/virtualbox.yml site.yml --tags vault
 
 ![](./images/keycloak-valid-url.png)
 
-> Copiando a credencial do client para ser configurada no vault mais na frent
+> Copiando a credencial do client para ser configurada no vault mais na frente
 
 ![](./images/keycloak-client-credential.png)
 
